@@ -67,13 +67,11 @@ int count(Fila *f) {
 
 void print(Fila *f) {
 	int i = f->ini;
-	cout << "-------------------------------" << endl;
-	cout << "Qtde de senhas não atendidas: " << count(f) << endl;
+	cout << count(f) << endl;
 	//while (i != f->fim) {
 	//	cout << f->nos[i] << endl;
 	//	i = incrementa(i);
 	//}
-	cout << "-------------------------------" << endl;
 }
 
 void freeFila(Fila * f) {
@@ -95,7 +93,9 @@ int main(int argc, char** argv)
     int input;
     
     while (continuar) { // mantém o loop até todas senhas serem atendidas
+        cout << "Quantidade de senhas não atendidas: ";
         print(senhasGeradas); // mostra a qtde de senhas que precisam ser atendidas
+        cout << "\n";
         cout << "0. Sair" << endl;
         cout << "1. Gerar senha" << endl;
         cout << "2. Realizar atendimento" << endl;
@@ -107,6 +107,8 @@ int main(int argc, char** argv)
                 if (isEmpty(senhasGeradas)) { // se a fila das senhas não atendidas estiver vazia
                     continuar = false;
                     freeFila(senhasGeradas); // limpa a memória
+                    cout << "\nQuantidade de senhas atendidas: "; 
+                    print(senhasAtendidas);
                     cout << "\nPrograma encerrado.\n" << endl;
                     break;
                 } else { // se a lista tiver elementos
@@ -119,11 +121,16 @@ int main(int argc, char** argv)
                 enqueue(senhasGeradas, senha_base); // coloca ela na fila das senhasGeradas (senhas não atendidas)
                 break;
             case 2:
-                cout << "\nConsumindo senha da vez.\n" << endl;
-                dequeue(senhasGeradas); // tira o valor recente da fila das senhasGeradas
-                enqueue(senhasAtendidas, senha_base); // coloca esse mesmo valor na fila das senhas atendidas
-                cout << "Senha atendida: " << senha_base << endl; // mostra o valor na tela
-                break;
+                if (isEmpty(senhasGeradas)) { // se a fila das senhas não atendidas estiver vazia
+                    cout << "\nNão há nenhuma senha para ser atendida agora.\n" << endl;
+                    break;
+                } else {
+                    cout << "\nConsumindo senha da vez.\n" << endl;
+                    dequeue(senhasGeradas); // tira o valor recente da fila das senhasGeradas
+                    enqueue(senhasAtendidas, senha_base); // coloca esse mesmo valor na fila das senhas atendidas
+                    cout << "Senha atendida: " << senha_base <<  "\n" << endl; // mostra o valor na tela
+                    break;
+                }
             default:
                 cout << "\nOpção inválida.\n" << endl;
                 break;
